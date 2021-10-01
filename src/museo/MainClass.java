@@ -1,10 +1,18 @@
+
+//5BIA Santarossa Riccardo 01/10/2021
+
 package museo;
 
-public class MainClass {
+import java.util.concurrent.*;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+public class MainClass 
+{
 
+	public static void main(String[] args) 
+	{
+		Semaphore mutex = new Semaphore(1);
+		Semaphore contatore = new Semaphore(4);
+		
 	}
 
 }
