@@ -9,8 +9,10 @@ public class ThreadGeneratore implements Runnable
 	@Override
 	public void run() 
 	{
-		// TODO Auto-generated method stub
-
+		while(true)
+		{
+			ThreadVisitatore t = new ThreadVisitatore();
+		}
 	}
 
 
