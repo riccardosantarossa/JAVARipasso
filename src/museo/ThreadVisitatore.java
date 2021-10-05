@@ -7,18 +7,14 @@ import java.util.concurrent.Semaphore;
 
 public class ThreadVisitatore implements Runnable 
 {
-	private Semaphore mutex, contatore;
+	private Semaphore mutexEnt, contatore, mutexUsc;
 	private int permanenza= (int) Math.random()*1000;
 
-	private int persAttesa, persInterno, persUscite;
-
-	public ThreadVisitatore(Semaphore mutex, Semaphore contatore, int pAtt, int pInt, int pUsc)
+	public ThreadVisitatore(Semaphore mutexE, Semaphore contatore, Semaphore mutexU)
 	{
-		this.mutex=mutex;
+		this.mutexEnt=mutexE;
 		this.contatore=contatore;
-		this.persAttesa=pAtt;
-		this.persInterno=pInt;
-		this.persUscite=pUsc;
+		this.mutexUsc=mutexU;
 	}
 
 	@Override
@@ -26,20 +22,52 @@ public class ThreadVisitatore implements Runnable
 	{
 		while(true)
 		{
-			contatore.acquire();
+			try 
+			{
+				contatore.acquire();
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
 
-			mutex.acquire();
-			persAttesa--;
-			persInterno++;
-			mutex.release();
+			try 
+			{
+				mutexEnt.acquire();
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+			
+			MainClass.persAttesa--;
+			
+			mutexEnt.release();
+			
+			
+			MainClass.persInterno++;
 
-			Thread.sleep(permanenza);
+			try 
+			{
+				Thread.sleep(permanenza);
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
 
 			contatore.release();
 			
-			mutex.acquire();
-			persUscite++;
-			mutex.release();
+			try 
+			{
+				mutexUsc.acquire();
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+			MainClass.persUscite++;
+			mutexUsc.release();
 
 		}
 

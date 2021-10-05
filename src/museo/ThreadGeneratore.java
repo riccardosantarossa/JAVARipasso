@@ -9,14 +9,13 @@ public class ThreadGeneratore implements Runnable
 {
 
 	private int tempo=1000;
-	private Semaphore mutex, contatore;
-	private int persAttesa;
+	private Semaphore mutexEnt, contatore, mutexUsc;
 
-	public ThreadGeneratore(Semaphore mutex, Semaphore contatore, int pAtt)
+	public ThreadGeneratore(Semaphore mutexE, Semaphore contatore, Semaphore mutexU)
 	{
-		this.mutex=mutex;
+		this.mutexEnt=mutexE;
 		this.contatore=contatore;
-		this.persAttesa=pAtt;
+		this.mutexUsc=mutexU;
 	}
 
 	@Override
@@ -25,13 +24,28 @@ public class ThreadGeneratore implements Runnable
 
 		while(true)
 		{
-			ThreadVisitatore t = new ThreadVisitatore();
+			new Thread(new ThreadVisitatore(mutexEnt, contatore, mutexUsc)).start();
 			
-			mutex.acquire();
-			persAttesa++;
-			mutex.release();
+			try 
+			{
+				mutexEnt.acquire();
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+			
+			MainClass.persAttesa++;
+			mutexEnt.release();
 
-			Thread.sleep(tempo+ (int) Math.random()*tempo);
+			try 
+			{
+				Thread.sleep(tempo+ (int) Math.random()*tempo);
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
 
 		}
 	}

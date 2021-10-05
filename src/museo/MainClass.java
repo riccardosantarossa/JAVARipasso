@@ -3,21 +3,33 @@
 
 package museo;
 
+import java.util.Scanner;
 import java.util.concurrent.*;
 
 public class MainClass 
 {
 
-	public  int persAttesa = 0; 
-	public  int persInterno;
-	public  int persUscite; 
+	public static int persAttesa = 0; 
+	public static int persInterno = 0;
+	public static int persUscite = 0;  
+	
 	public static void main(String[] args) 
 	{
-		Semaphore mutex = new Semaphore(1);
+		Semaphore mutexEntrata = new Semaphore(1);
 		Semaphore contatore = new Semaphore(4);
-
+		Semaphore mutexUscita = new Semaphore(1);
 		
-
+		Scanner listener = new Scanner(System.in);
+		
+		while(!listener.nextLine().equals("status"))
+		{
+			try {mutexEntrata.acquire();} 
+			catch (InterruptedException e){e.printStackTrace();}
+			
+			System.out.println("Persone in attesa : " + persAttesa);
+			System.out.println("Persone all'interno del museo : " + persInterno);
+			System.out.println("Persone in attesa : " + persUscite);
+		}
 	}
-
+	
 }
