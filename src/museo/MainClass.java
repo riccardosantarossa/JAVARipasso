@@ -18,18 +18,27 @@ public class MainClass
 		Semaphore mutexEntrata = new Semaphore(1);
 		Semaphore contatore = new Semaphore(4);
 		Semaphore mutexUscita = new Semaphore(1);
-		
+
+		int tMax=0,tMin=0;
+
+		ThreadGeneratore tg= new ThreadGeneratore(mutexEntrata, contatore, mutexUscita, tMax, tMin);
+		Ascoltatore a = new Ascoltatore(mutexEntrata, contatore, mutexUscita);
+
+		//Istanzio un thred collegato al generatore di istanze
+		Thread t1 = new Thread(tg);
+		//Istanzio un thred collegato al thred ascoltatore
+		Thread t2 = new Thread(a);
+
 		Scanner listener = new Scanner(System.in);
-		
-		while(!listener.nextLine().equals("status"))
-		{
-			try {mutexEntrata.acquire();} 
-			catch (InterruptedException e){e.printStackTrace();}
-			
-			System.out.println("Persone in attesa : " + persAttesa);
-			System.out.println("Persone all'interno del museo : " + persInterno);
-			System.out.println("Persone in attesa : " + persUscite);
-		}
+
+		System.out.println("Inserisci il tempo minimo: ");
+		tMin= listener.nextInt();
+		System.out.println("Inserisci il tempo massimo: ");
+		tMax= listener.nextInt();
+
+		t1.start();
+		t2.start();
+
 	}
 	
 }

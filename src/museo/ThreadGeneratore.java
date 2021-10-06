@@ -8,14 +8,17 @@ import java.util.concurrent.Semaphore;
 public class ThreadGeneratore implements Runnable 
 {
 
-	private int tempo=1000;
+	private int tMax,tMin;
 	private Semaphore mutexEnt, contatore, mutexUsc;
 
-	public ThreadGeneratore(Semaphore mutexE, Semaphore contatore, Semaphore mutexU)
+	//Il thread dovrà usare un semaforo per modificare una variabile quindi lo passo al costruttore, così come i tempi 
+	public ThreadGeneratore(Semaphore mutexE, Semaphore contatore, Semaphore mutexU, int tMax, int tMin)
 	{
 		this.mutexEnt=mutexE;
 		this.contatore=contatore;
 		this.mutexUsc=mutexU;
+		this.tMax=tMax;
+		this.tMin=tMin;
 	}
 
 	@Override
@@ -24,23 +27,24 @@ public class ThreadGeneratore implements Runnable
 
 		while(true)
 		{
-			new Thread(new ThreadVisitatore(mutexEnt, contatore, mutexUsc)).start();
-			
+			//Creo il generatore di thred
+			new Thread(new ThreadVisitatore(mutexEnt, contatore, mutexUsc,tMax,tMin)).start();
 			try 
 			{
+				//Faccio acquire del semaforo per modificare la variabile statica che conta i thread in attesa
 				mutexEnt.acquire();
 			} 
 			catch (InterruptedException e) 
 			{
 				e.printStackTrace();
 			}
-			
+			//Incremento la variabile statica e rilascio il semaforo
 			MainClass.persAttesa++;
 			mutexEnt.release();
 
 			try 
 			{
-				Thread.sleep(tempo+ (int) Math.random()*tempo);
+				Thread.sleep(tMin+ (int) Math.random()*tMax);
 			} 
 			catch (InterruptedException e) 
 			{
