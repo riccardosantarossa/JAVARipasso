@@ -22,7 +22,7 @@ public class Ascoltatore implements Runnable
 	{
 		while(true)
 		{
-			if(listener.nextLine().equals("status"))
+			if(!listener.nextLine().equals("status"))
 			{
 				try {mutexEnt.acquire();} 
 				catch (InterruptedException e) {e.printStackTrace();}
