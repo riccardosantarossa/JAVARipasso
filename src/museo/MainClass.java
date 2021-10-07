@@ -41,7 +41,7 @@ public class MainClass
 
 		while(true)
 		{
-			if(listener.nextLine().equals("status"))
+			if(!listener.nextLine().equals("status"))
 			{
 				try {mutexEntrata.acquire();} 
 				catch (InterruptedException e) {e.printStackTrace();}
