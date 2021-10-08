@@ -50,7 +50,7 @@ public class ThreadVisitatore implements Runnable
 			try 
 			{
 				//Thread.sleep(tPermMin + (int) Math.random()*tPermMax);
-				Thread.sleep(5000);
+				Thread.sleep(8000);
 			} 
 			catch (InterruptedException e) {e.printStackTrace();}
 
