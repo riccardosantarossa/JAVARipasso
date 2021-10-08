@@ -6,6 +6,8 @@ package museo;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
+import javax.print.attribute.standard.Media;
+
 public class MainClass 
 {
 
@@ -41,7 +43,7 @@ public class MainClass
 
 		while(true)
 		{
-			if(!listener.nextLine().equals("status"))
+			if(listener.nextLine().equals("status"))
 			{
 				try {mutexEntrata.acquire();} 
 				catch (InterruptedException e) {e.printStackTrace();}
@@ -53,6 +55,10 @@ public class MainClass
 				System.out.println("Visitatori in attesa: " + MainClass.persAttesa);
 				System.out.println("Visitatori all'interno del museo: " + MainClass.persInterno);
 				System.out.println("Persone che hanno completato la visita: " + MainClass.persUscite);
+
+				mutexEntrata.release();
+				contatore.release();
+				mutexUscita.release();
 
 			}
 		}
