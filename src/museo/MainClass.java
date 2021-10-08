@@ -45,12 +45,12 @@ public class MainClass
 		{
 			if(listener.nextLine().equals("status"))
 			{
-				try {mutexEntrata.acquire();} 
-				catch (InterruptedException e) {e.printStackTrace();}
+				/*try {mutexEntrata.acquire();} 
+				catch (InterruptedException e) {e.printStackTrace();}*/
 				try {contatore.acquire();} 
 				catch (InterruptedException e) {e.printStackTrace();}
-				try {mutexUscita.acquire();} 
-				catch (InterruptedException e) {e.printStackTrace();}
+				/*try {mutexUscita.acquire();} 
+				catch (InterruptedException e) {e.printStackTrace();}*/
 
 				System.out.println("Visitatori in attesa: " + MainClass.persAttesa);
 				System.out.println("Visitatori all'interno del museo: " + MainClass.persInterno);
