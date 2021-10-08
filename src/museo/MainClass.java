@@ -21,9 +21,9 @@ public class MainClass
 		Semaphore contatore = new Semaphore(4);
 		Semaphore mutexUscita = new Semaphore(1);
 
-		int tMax=0,tMin=0;
+		int tMax=0,tMin=0,tPermMax=0,tPermMin=0;
 
-		ThreadGeneratore tg= new ThreadGeneratore(mutexEntrata, contatore, mutexUscita, tMax, tMin);
+		ThreadGeneratore tg= new ThreadGeneratore(mutexEntrata, contatore, mutexUscita, tMax, tMin,tPermMin,tPermMax);
 		//Ascoltatore a = new Ascoltatore(mutexEntrata, contatore, mutexUscita);
 
 		//Istanzio un thred collegato al generatore di istanze
@@ -33,10 +33,14 @@ public class MainClass
 
 		Scanner listener = new Scanner(System.in);
 
-		System.out.println("Inserisci il tempo minimo: ");
+		System.out.println("Inserisci l'intervallo minimo: ");
 		tMin= listener.nextInt();
-		System.out.println("Inserisci il tempo massimo: ");
+		System.out.println("Inserisci l'intervallo massimo: ");
 		tMax= listener.nextInt();
+		System.out.println("Inserisci il tempo di permanenza minimo: ");
+		tPermMin= listener.nextInt();
+		System.out.println("Inserisci il tempo di permanenza massimo: ");
+		tPermMax= listener.nextInt();
 
 		t1.start();
 		//t2.start();

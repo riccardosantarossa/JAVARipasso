@@ -8,7 +8,7 @@ import java.util.concurrent.Semaphore;
 public class ThreadVisitatore implements Runnable 
 {
 	private Semaphore mutexEnt, contatore, mutexUsc;
-	private int tMax,tMin;
+	private int tPermMin,tPermMax;
 	
 	//Il thread dovrà usare i semaforo per modificare le variabile quindi lo passo al costruttore, così come i tempi 
 	public ThreadVisitatore(Semaphore mutexE, Semaphore contatore, Semaphore mutexU, int tMax, int tMin)
@@ -16,8 +16,9 @@ public class ThreadVisitatore implements Runnable
 		this.mutexEnt=mutexE;
 		this.contatore=contatore;
 		this.mutexUsc=mutexU;
-		this.tMax=tMax;
-		this.tMin=tMin;
+		this.tPermMax=tMax;
+		this.tPermMin=tMin;
+		
 	}
 
 	@Override
@@ -31,7 +32,8 @@ public class ThreadVisitatore implements Runnable
 			catch (InterruptedException e) {e.printStackTrace();}
 
 			//Decremento il numero di persone in attesa perchè sono entrato nel museo facendo acquire del contatore
-			MainClass.persAttesa--;
+			if(MainClass.persAttesa>0)
+				MainClass.persAttesa--;
 
 			//Rilascio il semaforo di entrata perchè ho modificato la variabile
 			mutexEnt.release();
@@ -41,10 +43,15 @@ public class ThreadVisitatore implements Runnable
 			catch (InterruptedException e){e.printStackTrace();}
 			
 			//Incremento le persone che sono all'interno del museo
-			MainClass.persInterno++;
+			if(MainClass.persInterno<4)
+				MainClass.persInterno++;
 
 			//Tempo di permanenza dentro al museo
-			try {Thread.sleep(tMin + (int) Math.random()*tMax);} 
+			try 
+			{
+				//Thread.sleep(tPermMin + (int) Math.random()*tPermMax);
+				Thread.sleep(5000);
+			} 
 			catch (InterruptedException e) {e.printStackTrace();}
 
 			//Rilascio uno slot del contatore dato che è passato il tempo di permanenza
