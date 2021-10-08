@@ -25,16 +25,20 @@ public class ThreadVisitatore implements Runnable
 	{
 		while(true)
 		{
-			//Faccio acquire sul semaforo a contatore
-			try {contatore.acquire();} 
-			catch (InterruptedException e){e.printStackTrace();}
-			
+
 			//Acquire sul semaforo di entrata
 			try {mutexEnt.acquire();} 
 			catch (InterruptedException e) {e.printStackTrace();}
-			
+
 			//Decremento il numero di persone in attesa perchè sono entrato nel museo facendo acquire del contatore
 			MainClass.persAttesa--;
+
+			//Rilascio il semaforo di entrata perchè ho modificato la variabile
+			mutexEnt.release();
+
+			//Faccio acquire sul semaforo a contatore
+			try {contatore.acquire();} 
+			catch (InterruptedException e){e.printStackTrace();}
 			
 			//Incremento le persone che sono all'interno del museo
 			MainClass.persInterno++;
@@ -42,6 +46,9 @@ public class ThreadVisitatore implements Runnable
 			//Tempo di permanenza dentro al museo
 			try {Thread.sleep(tMin + (int) Math.random()*tMax);} 
 			catch (InterruptedException e) {e.printStackTrace();}
+
+			//Rilascio uno slot del contatore dato che è passato il tempo di permanenza
+			contatore.release();
 			
 			//Faccio acquire del semaforo di uscita
 			try {mutexUsc.acquire();} 
@@ -49,12 +56,6 @@ public class ThreadVisitatore implements Runnable
 			
 			//Modifico la variabile che conta le persone uscite
 			MainClass.persUscite++;
-
-			//Rilascio uno slot del contatore dato che è passato il tempo di permanenza
-			contatore.release();
-
-			//Rilascio il semaforo di entrata perchè ho modificato la variabile
-			mutexEnt.release();
 
 			//Rilascio il semaforo di uscita
 			mutexUsc.release();

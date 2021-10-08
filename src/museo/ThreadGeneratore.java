@@ -8,7 +8,7 @@ import java.util.concurrent.Semaphore;
 public class ThreadGeneratore implements Runnable 
 {
 
-	private int tMax,tMin;
+	private int tMax,tMin,nt=0;
 	private Semaphore mutexEnt, contatore, mutexUsc;
 
 	//Il thread dovrà usare un semaforo per modificare una variabile quindi lo passo al costruttore, così come i tempi 
@@ -29,6 +29,9 @@ public class ThreadGeneratore implements Runnable
 		{
 			//Creo il generatore di thred
 			new Thread(new ThreadVisitatore(mutexEnt, contatore, mutexUsc,tMax,tMin)).start();
+			
+			nt++;
+
 			try 
 			{
 				//Faccio acquire del semaforo per modificare la variabile statica che conta i thread in attesa

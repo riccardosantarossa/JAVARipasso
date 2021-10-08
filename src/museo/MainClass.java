@@ -24,7 +24,7 @@ public class MainClass
 		int tMax=0,tMin=0;
 
 		ThreadGeneratore tg= new ThreadGeneratore(mutexEntrata, contatore, mutexUscita, tMax, tMin);
-		Ascoltatore a = new Ascoltatore(mutexEntrata, contatore, mutexUscita);
+		//Ascoltatore a = new Ascoltatore(mutexEntrata, contatore, mutexUscita);
 
 		//Istanzio un thred collegato al generatore di istanze
 		Thread t1 = new Thread(tg);
@@ -45,12 +45,12 @@ public class MainClass
 		{
 			if(listener.nextLine().equals("status"))
 			{
-				/*try {mutexEntrata.acquire();} 
-				catch (InterruptedException e) {e.printStackTrace();}*/
+				try {mutexEntrata.acquire();} 
+				catch (InterruptedException e) {e.printStackTrace();}
 				try {contatore.acquire();} 
 				catch (InterruptedException e) {e.printStackTrace();}
-				/*try {mutexUscita.acquire();} 
-				catch (InterruptedException e) {e.printStackTrace();}*/
+				try {mutexUscita.acquire();} 
+				catch (InterruptedException e) {e.printStackTrace();}
 
 				System.out.println("Visitatori in attesa: " + MainClass.persAttesa);
 				System.out.println("Visitatori all'interno del museo: " + MainClass.persInterno);
