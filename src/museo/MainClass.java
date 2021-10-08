@@ -6,7 +6,6 @@ package museo;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
-import javax.print.attribute.standard.Media;
 
 public class MainClass 
 {
